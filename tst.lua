@@ -1,8 +1,8 @@
-require("moonloader")
+require "moonloader"
+
 script_name("MONSTER MENU - BETA")
 script_author("DEXTER MENU")
 script_description("/m")
-
 local faicons = require('fAwesome6')
 local ev = require('lib.samp.events')
 local imgui = require 'mimgui'
@@ -884,4 +884,5 @@ function sampev.onSendPlayerSync(data)
     end
 
 end
+
 
