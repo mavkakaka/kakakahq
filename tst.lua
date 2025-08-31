@@ -1,6 +1,6 @@
 require("moonloader")
 script_name("MONSTER MENU - BETA")
-Script_author("DEXTER MENU")
+script_author("DEXTER MENU")
 script_description("/m")
 
 local faicons = require('fAwesome6')
@@ -884,3 +884,4 @@ function sampev.onSendPlayerSync(data)
     end
 
 end
+
